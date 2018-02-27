@@ -30,6 +30,7 @@ composite Verifier(input InputS) {
 			state : {
 			mutable list<MyType> inputs ;
 			mutable list<MyType> outputs ;
+			mutable int32 punctCount = 0;
 			}
 			onTuple InputS : {
 				if(size(outputs) > 0) {	
@@ -39,6 +40,8 @@ composite Verifier(input InputS) {
 					
 					if(val != InputS) {
 						log(Sys.error,"ERROR Does not match: " + (rstring)InputS + " and " + (rstring)val);
+						/* print test result to console output for special test scenarios */
+						printStringLn("JSON test failed");
 						shutdownPE();
 					}
 				}
@@ -55,12 +58,31 @@ composite Verifier(input InputS) {
 					
 					if(val != OutputS) {
 						log(Sys.error,"ERROR Does not match: " + (rstring)(rstring)OutputS + " and " + (rstring)val);
+						/* print test result to console output for special test scenarios */
+						printStringLn("JSON test failed");
 						shutdownPE();
 					}
 				}
 				else {
 					log(Sys.info,"Appending: "+ (rstring)OutputS);
 					appendM(outputs, OutputS);
+				}
+			}
+			/* handling punct for testscenarios where the test case is submitted 
+			 * as job and has to provide it's result on console log
+			 */
+			onPunct InputS: {
+				if (currentPunct() == Sys.FinalMarker) {
+					if (++punctCount == 2) {
+						printStringLn("JSON test passed");
+					}
+				}
+			}
+			onPunct OutputS: {
+				if (currentPunct() == Sys.FinalMarker) {
+					if (++punctCount == 2) {
+						printStringLn("JSON test passed");
+					}
 				}
 			}
 			
@@ -87,6 +109,7 @@ composite VerifierJTOT(input JsonS, ExpectedS) {
 			state : {
 			mutable list<MyType> inputs ;
 			mutable list<MyType> outputs ;
+			mutable int32 punctCount = 0;
 			}
 			onTuple ExpectedS : {
 				if(size(outputs) > 0) {	
@@ -96,6 +119,8 @@ composite VerifierJTOT(input JsonS, ExpectedS) {
 					
 					if(val != ExpectedS) {
 						log(Sys.error,"ERROR Does not match: " + (rstring)ExpectedS + " and " + (rstring)val);
+						/* print test result to console output for special test scenarios */
+						printStringLn("JSON test failed");
 						shutdownPE();
 					}
 				}
@@ -112,6 +137,8 @@ composite VerifierJTOT(input JsonS, ExpectedS) {
 					
 					if(val != OutputS) {
 						log(Sys.error,"ERROR Does not match: " + (rstring)(rstring)OutputS + " and " + (rstring)val);
+						/* print test result to console output for special test scenarios */
+						printStringLn("JSON test failed");
 						shutdownPE();
 					}
 				}
@@ -120,7 +147,23 @@ composite VerifierJTOT(input JsonS, ExpectedS) {
 					appendM(outputs, OutputS);
 				}
 			}
-			
+			/* handling punct for testscenarios where the test case is submitted 
+			 * as job and has to provide it's result on console log
+			 */
+			onPunct InputS: {
+				if (currentPunct() == Sys.FinalMarker) {
+					if (++punctCount == 2) {
+						printStringLn("JSON test passed");
+					}
+				}
+			}
+			onPunct OutputS: {
+				if (currentPunct() == Sys.FinalMarker) {
+					if (++punctCount == 2) {
+						printStringLn("JSON test passed");
+					}
+				}
+			}
 		}
 	
 }
@@ -155,6 +198,7 @@ composite VerifierArray(input InputS) {
 			state : {
 			mutable list<MyType> inputs ;
 			mutable list<MyType> outputs ;
+			mutable int32 punctCount = 0;
 			}
 			onTuple InputS : {
 				if(size(outputs) > 0) {	
@@ -164,6 +208,8 @@ composite VerifierArray(input InputS) {
 					
 					if(val != InputS) {
 						log(Sys.error,"ERROR Does not match: " + (rstring)InputS + " and " + (rstring)val);
+						/* print test result to console output for special test scenarios */
+						printStringLn("JSON test failed");
 						shutdownPE();
 					}
 					else {
@@ -183,6 +229,8 @@ composite VerifierArray(input InputS) {
 					
 					if(val != OutputS) {
 						log(Sys.error,"ERROR Does not match: " + (rstring)(rstring)OutputS + " and " + (rstring)val);
+						/* print test result to console output for special test scenarios */
+						printStringLn("JSON test failed");
 						shutdownPE();
 					}
 					else {
@@ -194,7 +242,23 @@ composite VerifierArray(input InputS) {
 					appendM(outputs, OutputS);
 				}
 			}
-			
+			/* handling punct for testscenarios where the test case is submitted 
+			 * as job and has to provide it's result on console log
+			 */
+			onPunct InputS: {
+				if (currentPunct() == Sys.FinalMarker) {
+					if (++punctCount == 2) {
+						printStringLn("JSON test passed");
+					}
+				}
+			}
+			onPunct OutputS: {
+				if (currentPunct() == Sys.FinalMarker) {
+					if (++punctCount == 2) {
+						printStringLn("JSON test passed");
+					}
+				}
+			}
 		}
 	
 }

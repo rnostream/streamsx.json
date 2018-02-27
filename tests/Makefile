@@ -31,3 +31,8 @@ compile: ${tests}
 
 clean:
 	rm -rf ${outputdir}
+
+# target to just compile one testcase given as argument
+# make testcase=BasicTest submittest
+submittest:
+	${sc} ${args} --output-directory ${outputdir}/${testcase} -M ${ns}::${testcase}
